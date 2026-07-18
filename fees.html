@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fee Management — KPS Smart ERP</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-brand">
+    <a href="dashboard.html" style="display:flex;align-items:center;gap:12px;">
+      <div class="topbar-logo">KPS</div>
+      <div>
+        <h1>KPS Smart ERP</h1>
+        <span>Kamla Public School · Naini</span>
+      </div>
+    </a>
+  </div>
+  <div class="topbar-user">
+    <span class="role-pill" id="userRole">role</span>
+    <span id="userName" style="font-size:0.85rem;">यूज़र</span>
+    <button class="btn btn-ghost btn-sm" data-logout>लॉगआउट</button>
+  </div>
+</div>
+
+<div class="app-shell">
+  <div class="sidebar">
+    <a href="dashboard.html"><div class="side-link">🏠 डैशबोर्ड</div></a>
+    <a href="students.html"><div class="side-link">🎓 Student Management</div></a>
+    <div class="side-link" style="opacity:0.5;">👔 Employee Management</div>
+    <div class="side-link active">💰 Fee Management</div>
+    <div class="side-link" style="opacity:0.5;">🗓️ Attendance</div>
+    <div class="side-link" style="opacity:0.5;">📢 Notice Board</div>
+    <div class="side-link" style="opacity:0.5;">📊 Reports</div>
+  </div>
+
+  <div class="main-content">
+    <div class="page-head">
+      <h2>Fee Management</h2>
+      <p>शुल्क वसूलो, रसीदें देखो, बकाया ट्रैक करो और दैनिक संग्रह देखो।</p>
+    </div>
+
+    <div class="subtab-row">
+      <button class="subtab-btn active" data-target="panelCollect">💵 शुल्क वसूली</button>
+      <button class="subtab-btn" data-target="panelReceipts">🧾 रसीदें</button>
+      <button class="subtab-btn" data-target="panelPending">⚠️ बकाया शुल्क</button>
+      <button class="subtab-btn" data-target="panelDaily">📅 दैनिक संग्रह</button>
+    </div>
+
+    <!-- COLLECT FEE -->
+    <div class="subtab-panel active" id="panelCollect">
+      <div class="panel glass" style="max-width:560px;">
+        <div class="form-group search-dropdown-wrap">
+          <label class="form-label">छात्र खोजें *</label>
+          <input class="form-input" type="text" id="studentSearchInput" placeholder="नाम, ID या रोल नंबर टाइप करो...">
+          <div class="search-results" id="searchResults"></div>
+        </div>
+
+        <div class="selected-student-card" id="selectedStudentCard"></div>
+
+        <form id="feeForm">
+          <div class="form-group">
+            <label class="form-label">शुल्क प्रकार *</label>
+            <select class="form-input" id="f_feeType" required>
+              <option value="">चुनें</option>
+              <option value="Monthly Fee">मासिक शुल्क (Monthly Fee)</option>
+              <option value="Admission Fee">प्रवेश शुल्क (Admission Fee)</option>
+              <option value="Registration Fee">पंजीकरण शुल्क (Registration Fee)</option>
+              <option value="Examination Fee">परीक्षा शुल्क (Examination Fee)</option>
+              <option value="Form Fee">फॉर्म शुल्क (Form Fee)</option>
+              <option value="ID Card Fee">ID कार्ड शुल्क (ID Card Fee)</option>
+              <option value="Diary Fee">डायरी शुल्क (Diary Fee)</option>
+              <option value="Transport Fee">परिवहन शुल्क (Transport Fee)</option>
+              <option value="Fine">जुर्माना (Fine)</option>
+              <option value="Other Charges">अन्य शुल्क (Other Charges)</option>
+            </select>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+            <div class="form-group">
+              <label class="form-label">राशि (₹) *</label>
+              <input class="form-input" type="number" id="f_amount" min="1" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">भुगतान माध्यम *</label>
+              <select class="form-input" id="f_mode" required>
+                <option value="Cash">नकद (Cash)</option>
+                <option value="Online">ऑनलाइन (Online)</option>
+                <option value="Cheque">चेक (Cheque)</option>
+              </select>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-gold" style="width:100%;">शुल्क दर्ज करें →</button>
+        </form>
+      </div>
+
+      <div id="receiptBox" style="display:none;margin-top:24px;"></div>
+    </div>
+
+    <!-- RECEIPTS -->
+    <div class="subtab-panel" id="panelReceipts">
+      <div class="panel glass" style="margin-bottom:16px;">
+        <input class="form-input" type="text" id="receiptSearchInput" placeholder="छात्र नाम या रसीद नंबर से खोजें...">
+      </div>
+      <div class="panel glass" style="padding:16px;overflow-x:auto;">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>रसीद नं.</th>
+              <th>छात्र</th>
+              <th>शुल्क प्रकार</th>
+              <th>राशि</th>
+              <th>तारीख</th>
+              <th>—</th>
+            </tr>
+          </thead>
+          <tbody id="receiptsTbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- PENDING -->
+    <div class="subtab-panel" id="panelPending">
+      <div class="panel glass" style="padding:16px;overflow-x:auto;">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>छात्र</th>
+              <th>कक्षा</th>
+              <th>स्थिति</th>
+              <th>कार्रवाई</th>
+            </tr>
+          </thead>
+          <tbody id="pendingTbody"></tbody>
+        </table>
+      </div>
+      <p style="font-size:0.78rem;color:var(--muted);margin-top:10px;">नोट: यह सूची इस महीने का "मासिक शुल्क" जमा न करने वाले सक्रिय छात्रों को दिखाती है।</p>
+    </div>
+
+    <!-- DAILY -->
+    <div class="subtab-panel" id="panelDaily">
+      <div class="fee-summary-row">
+        <div class="fee-summary-card glass">
+          <div class="num" id="dailyTotal">₹0</div>
+          <div class="lbl">आज कुल संग्रह</div>
+        </div>
+        <div class="fee-summary-card glass">
+          <div class="num" id="dailyCount">0</div>
+          <div class="lbl">आज की रसीदें</div>
+        </div>
+        <div class="fee-summary-card glass">
+          <div class="num mono" id="dailyDate">—</div>
+          <div class="lbl">तारीख</div>
+        </div>
+      </div>
+      <div class="panel glass" style="padding:16px;overflow-x:auto;">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>छात्र</th>
+              <th>शुल्क प्रकार</th>
+              <th>राशि</th>
+              <th>माध्यम</th>
+            </tr>
+          </thead>
+          <tbody id="dailyTbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
+<script src="js/firebase-config.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/fees.js"></script>
+<script>
+  requireAuth();
+  window.addEventListener('DOMContentLoaded', () => {
+    loadStudentsForFee();
+    loadPayments();
+    document.getElementById('dailyDate').textContent = todayStr();
+  });
+</script>
+</body>
+</html>
