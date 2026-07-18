@@ -305,3 +305,107 @@ select.form-input{cursor:pointer;}
 
 .login-foot{text-align:center;margin-top:18px;font-size:0.78rem;color:var(--muted);}
 
+/* ================= FEE MANAGEMENT ================= */
+.subtab-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px;}
+.subtab-btn{
+  font-size:0.84rem;padding:10px 18px;border-radius:9px;
+  border:1.5px solid var(--line);background:rgba(255,255,255,0.5);
+  color:var(--royal-deep);cursor:pointer;
+}
+.subtab-btn.active{
+  background:linear-gradient(135deg,var(--royal-light),var(--royal-deep));
+  color:var(--white);border-color:var(--royal-deep);font-weight:600;
+}
+.subtab-panel{display:none;}
+.subtab-panel.active{display:block;}
+
+.search-dropdown-wrap{position:relative;}
+.search-results{
+  position:absolute;top:calc(100% + 6px);left:0;right:0;z-index:20;
+  max-height:240px;overflow-y:auto;border-radius:10px;
+  background:var(--white);border:1.5px solid var(--line);
+  box-shadow:0 12px 30px rgba(11,28,82,0.18);
+  display:none;
+}
+.search-results.show{display:block;}
+.search-result-item{
+  display:flex;align-items:center;gap:10px;
+  padding:11px 14px;cursor:pointer;border-bottom:1px solid var(--line);
+}
+.search-result-item:last-child{border-bottom:none;}
+.search-result-item:hover{background:rgba(18,42,122,0.05);}
+
+.selected-student-card{
+  display:flex;align-items:center;gap:12px;
+  padding:14px 16px;border-radius:10px;
+  background:rgba(201,162,39,0.1);border:1.5px solid var(--gold);
+  margin-bottom:18px;display:none;
+}
+.selected-student-card.show{display:flex;}
+
+.fee-summary-row{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:20px;
+}
+@media(max-width:700px){.fee-summary-row{grid-template-columns:1fr;}}
+.fee-summary-card{border-radius:12px;padding:18px;text-align:center;}
+.fee-summary-card .num{font-family:'Sora';font-size:1.5rem;font-weight:700;color:var(--royal-deep);}
+.fee-summary-card .lbl{font-size:0.76rem;color:var(--muted);margin-top:4px;}
+
+.receipt-preview{
+  max-width:380px;margin:0 auto;padding:26px;
+  background:var(--white);border-radius:14px;
+  border:1.5px dashed var(--gold);
+}
+.receipt-preview h3{text-align:center;font-size:1.1rem;}
+.receipt-preview .school-sub{text-align:center;font-size:0.72rem;color:var(--muted);margin-bottom:16px;}
+.receipt-row{display:flex;justify-content:space-between;font-size:0.85rem;padding:6px 0;border-bottom:1px dashed var(--line);}
+.receipt-row.total{font-weight:700;color:var(--royal-deep);border-bottom:none;padding-top:12px;font-size:1rem;}
+
+@media print{
+  body *{visibility:hidden;}
+  #printArea, #printArea *{visibility:visible;}
+  #printArea{position:absolute;top:0;left:0;width:100%;}
+}
+
+/* ================= EMPLOYEE MANAGEMENT ================= */
+.role-badge{
+  font-family:'JetBrains Mono';font-size:0.66rem;padding:3px 10px;border-radius:20px;
+  background:rgba(18,42,122,0.1);color:var(--royal-deep);display:inline-block;
+}
+
+/* ================= ATTENDANCE ================= */
+.att-toolbar{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;margin-bottom:20px;}
+.att-toolbar .form-group{margin-bottom:0;flex:1;min-width:140px;}
+
+.att-roll-list{display:flex;flex-direction:column;gap:8px;}
+.att-roll-item{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 16px;border-radius:10px;
+  background:rgba(255,255,255,0.55);border:1.5px solid var(--line);
+}
+.att-status-btns{display:flex;gap:6px;}
+.att-btn{
+  font-family:'JetBrains Mono';font-size:0.72rem;
+  padding:7px 14px;border-radius:7px;border:1.5px solid var(--line);
+  background:transparent;color:var(--muted);cursor:pointer;
+}
+.att-btn.present.active{background:var(--success);color:var(--white);border-color:var(--success);}
+.att-btn.absent.active{background:var(--danger);color:var(--white);border-color:var(--danger);}
+.att-btn.leave.active{background:var(--gold);color:var(--royal-deep);border-color:var(--gold);}
+
+.att-percent-bar{width:100%;height:8px;border-radius:20px;background:var(--line);overflow:hidden;margin-top:6px;}
+.att-percent-fill{height:100%;background:var(--success);}
+.att-percent-fill.low{background:var(--danger);}
+.att-percent-fill.mid{background:var(--gold);}
+
+/* ================= SALARY MANAGEMENT ================= */
+.salary-card{
+  border-radius:12px;padding:18px 20px;
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;
+  margin-bottom:14px;
+}
+.salary-progress{width:100%;height:10px;border-radius:20px;background:var(--line);overflow:hidden;margin-top:8px;max-width:220px;}
+.salary-progress-fill{height:100%;background:linear-gradient(90deg,var(--gold-light),var(--gold));}
+
+
+
