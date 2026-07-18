@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>डैशबोर्ड — KPS Smart ERP</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-brand">
+    <div class="topbar-logo">KPS</div>
+    <div>
+      <h1>KPS Smart ERP</h1>
+      <span>Kamla Public School · Naini</span>
+    </div>
+  </div>
+  <div class="topbar-user">
+    <span class="role-pill" id="userRole">role</span>
+    <span id="userName" style="font-size:0.85rem;">यूज़र</span>
+    <button class="btn btn-ghost btn-sm" data-logout>लॉगआउट</button>
+  </div>
+</div>
+
+<div class="app-shell">
+  <div class="sidebar">
+    <div class="side-link active">🏠 डैशबोर्ड</div>
+    <a href="students.html"><div class="side-link">🎓 Student Management</div></a>
+    <div class="side-link" style="opacity:0.5;">👔 Employee Management</div>
+    <div class="side-link" style="opacity:0.5;">💰 Fee Management</div>
+    <div class="side-link" style="opacity:0.5;">🗓️ Attendance</div>
+    <div class="side-link" style="opacity:0.5;">📢 Notice Board</div>
+    <div class="side-link" style="opacity:0.5;">📊 Reports</div>
+  </div>
+
+  <div class="main-content">
+    <div class="page-head">
+      <h2>नमस्ते, <span id="welcomeName">यूज़र</span> 👋</h2>
+      <p>यह तुम्हारा KPS Smart ERP डैशबोर्ड है — Phase 1 सक्रिय: Login + Student Management</p>
+    </div>
+
+    <div class="stat-grid">
+      <div class="stat-card glass">
+        <div class="icon">🎓</div>
+        <div class="num">—</div>
+        <div class="lbl">कुल छात्र</div>
+      </div>
+      <div class="stat-card glass">
+        <div class="icon">🏫</div>
+        <div class="num">2</div>
+        <div class="lbl">सक्रिय शाखाएं</div>
+      </div>
+      <div class="stat-card glass">
+        <div class="icon">👔</div>
+        <div class="num">—</div>
+        <div class="lbl">कुल कर्मचारी</div>
+      </div>
+      <div class="stat-card glass">
+        <div class="icon">📋</div>
+        <div class="num">Phase 1</div>
+        <div class="lbl">विकास चरण</div>
+      </div>
+    </div>
+
+    <div class="panel glass">
+      <h3 style="margin-bottom:12px;font-size:1.1rem;">अगला कदम</h3>
+      <p style="font-size:0.88rem;color:var(--muted);">Student Management module सक्रिय है — नए छात्र जोड़ो, सूची देखो और प्रोफाइल मैनेज करो। बाकी modules (Fee, Attendance, Salary, Reports) Phase 2-3 में जुड़ेंगे।</p>
+      <a href="students.html" style="display:inline-block;margin-top:16px;">
+        <button class="btn btn-royal">Student Management खोलें →</button>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
+<script src="js/firebase-config.js"></script>
+<script src="js/auth.js"></script>
+<script>
+  requireAuth();
+  window.addEventListener('DOMContentLoaded', () => {
+    const name = sessionStorage.getItem('kps_name') || 'यूज़र';
+    const welcomeEl = document.getElementById('welcomeName');
+    if(welcomeEl) welcomeEl.textContent = name;
+
+    // live student count
+    db.collection('students').onSnapshot(snap => {
+      const statNum = document.querySelectorAll('.stat-card .num')[0];
+      if(statNum) statNum.textContent = snap.size;
+    });
+  });
+</script>
+</body>
+</html>
