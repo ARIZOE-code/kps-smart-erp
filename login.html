@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>लॉगिन — KPS Smart ERP</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="login-wrap">
+
+  <!-- BRAND / SIGNATURE SIDE -->
+  <div class="login-brand-side">
+    <div class="login-brand-top">
+      <div class="topbar-logo">KPS</div>
+      <div>
+        <h1>KPS Smart ERP</h1>
+        <span>Powered by STK CREATION</span>
+      </div>
+    </div>
+
+    <div>
+      <div class="login-tagline">एक ऐप, हर शाखा, पूरा नियंत्रण</div>
+      <p class="login-sub">Kamla Public School व KPS Intermediate College — दोनों शाखाओं का पूरा प्रबंधन एक ही जगह से।</p>
+
+      <div class="id-card">
+        <div class="id-card-top">
+          <span class="school">KPS GROUP · DIGITAL ID</span>
+          <div class="id-card-qr"></div>
+        </div>
+        <div class="id-card-avatar">आ</div>
+        <div class="id-card-name">आरव शर्मा</div>
+        <div class="id-card-meta">कक्षा 10 · अनुभाग B · रोल 24</div>
+        <div class="id-card-foot">
+          <span>ID: KPS-2026-1042</span>
+          <span>मान्य 2026-27</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LOGIN FORM SIDE -->
+  <div class="login-form-side">
+    <div class="login-card glass-strong">
+      <div class="login-card-head">
+        <h3>वापसी पर स्वागत है</h3>
+        <p>अपनी भूमिका चुनें और लॉगिन करें</p>
+      </div>
+
+      <div class="role-select-grid" id="roleGrid">
+        <div class="role-chip active" data-role="super_admin">सुपर एडमिन</div>
+        <div class="role-chip" data-role="admin">एडमिन</div>
+        <div class="role-chip" data-role="manager">मैनेजर</div>
+        <div class="role-chip" data-role="accountant">अकाउंटेंट</div>
+        <div class="role-chip" data-role="teacher">टीचर</div>
+        <div class="role-chip" data-role="student">स्टूडेंट</div>
+      </div>
+
+      <div class="login-error" id="loginError"></div>
+
+      <form id="loginForm">
+        <div class="form-group">
+          <label class="form-label">ईमेल / यूज़र ID</label>
+          <input class="form-input" type="email" id="loginEmail" placeholder="you@kps.edu" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">पासवर्ड</label>
+          <input class="form-input" type="password" id="loginPassword" placeholder="••••••••" required>
+        </div>
+        <button type="submit" class="btn btn-gold" style="width:100%;">लॉगिन करें →</button>
+      </form>
+
+      <div class="login-foot">पासवर्ड भूल गए? स्कूल एडमिन से संपर्क करें</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
+<script src="js/firebase-config.js"></script>
+<script src="js/auth.js"></script>
+</body>
+</html>
