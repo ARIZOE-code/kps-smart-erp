@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Management — KPS Smart ERP</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-brand">
+    <a href="dashboard.html" style="display:flex;align-items:center;gap:12px;">
+      <div class="topbar-logo">KPS</div>
+      <div>
+        <h1>KPS Smart ERP</h1>
+        <span>Kamla Public School · Naini</span>
+      </div>
+    </a>
+  </div>
+  <div class="topbar-user">
+    <span class="role-pill" id="userRole">role</span>
+    <span id="userName" style="font-size:0.85rem;">यूज़र</span>
+    <button class="btn btn-ghost btn-sm" data-logout>लॉगआउट</button>
+  </div>
+</div>
+
+<div class="app-shell">
+  <div class="sidebar">
+    <a href="dashboard.html"><div class="side-link">🏠 डैशबोर्ड</div></a>
+    <div class="side-link active">🎓 Student Management</div>
+    <div class="side-link" style="opacity:0.5;">👔 Employee Management</div>
+    <div class="side-link" style="opacity:0.5;">💰 Fee Management</div>
+    <div class="side-link" style="opacity:0.5;">🗓️ Attendance</div>
+    <div class="side-link" style="opacity:0.5;">📢 Notice Board</div>
+    <div class="side-link" style="opacity:0.5;">📊 Reports</div>
+  </div>
+
+  <div class="main-content">
+    <div class="page-head" style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;">
+      <div>
+        <h2>Student Management</h2>
+        <p>छात्रों की प्रोफाइल जोड़ो, खोजो और मैनेज करो — <span id="totalCount">0</span> कुल छात्र</p>
+      </div>
+      <button class="btn btn-gold" onclick="openAddModal()">+ नया छात्र जोड़ें</button>
+    </div>
+
+    <div class="panel glass" style="display:flex;gap:14px;flex-wrap:wrap;margin-bottom:20px;">
+      <input class="form-input" style="flex:1;min-width:200px;" type="text" id="searchInput" placeholder="नाम, ID या रोल नंबर से खोजें...">
+      <select class="form-input" id="classFilter" style="max-width:180px;">
+        <option value="">सभी कक्षाएं</option>
+        <option value="1">कक्षा 1</option>
+        <option value="2">कक्षा 2</option>
+        <option value="3">कक्षा 3</option>
+        <option value="4">कक्षा 4</option>
+        <option value="5">कक्षा 5</option>
+        <option value="6">कक्षा 6</option>
+        <option value="7">कक्षा 7</option>
+        <option value="8">कक्षा 8</option>
+        <option value="9">कक्षा 9</option>
+        <option value="10">कक्षा 10</option>
+        <option value="11">कक्षा 11</option>
+        <option value="12">कक्षा 12</option>
+      </select>
+    </div>
+
+    <div class="panel glass" style="padding:16px;overflow-x:auto;">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>छात्र</th>
+            <th>कक्षा / अनुभाग</th>
+            <th>रोल नं.</th>
+            <th>पिता का नाम</th>
+            <th>मोबाइल</th>
+            <th>स्थिति</th>
+            <th>कार्रवाई</th>
+          </tr>
+        </thead>
+        <tbody id="studentsTbody"></tbody>
+      </table>
+      <div id="emptyState" style="display:none;text-align:center;padding:40px 20px;color:var(--muted);">
+        <div style="font-size:2rem;margin-bottom:10px;">🎓</div>
+        <p>कोई छात्र नहीं मिला। "+ नया छात्र जोड़ें" से शुरू करो, या फ़िल्टर हटाओ।</p>
+      </div>
+      <p style="margin-top:12px;font-size:0.76rem;color:var(--muted);"><span id="filteredCount">0</span> छात्र दिख रहे हैं</p>
+    </div>
+  </div>
+</div>
+
+<!-- ADD/EDIT MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal-box glass-strong" id="studentModal">
+    <div class="modal-head">
+      <h3 id="modalTitle">नया छात्र जोड़ें</h3>
+      <button class="modal-close" id="modalCloseBtn">✕</button>
+    </div>
+    <form id="studentForm">
+      <div class="form-group">
+        <label class="form-label">पूरा नाम *</label>
+        <input class="form-input" type="text" id="f_name" required>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div class="form-group">
+          <label class="form-label">कक्षा *</label>
+          <select class="form-input" id="f_class" required>
+            <option value="">चुनें</option>
+            <option value="1">1</option><option value="2">2</option><option value="3">3</option>
+            <option value="4">4</option><option value="5">5</option><option value="6">6</option>
+            <option value="7">7</option><option value="8">8</option><option value="9">9</option>
+            <option value="10">10</option><option value="11">11</option><option value="12">12</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">अनुभाग *</label>
+          <select class="form-input" id="f_section" required>
+            <option value="">चुनें</option>
+            <option value="A">A</option><option value="B">B</option><option value="C">C</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">रोल नंबर *</label>
+        <input class="form-input" type="text" id="f_roll" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">पिता का नाम</label>
+        <input class="form-input" type="text" id="f_father">
+      </div>
+      <div class="form-group">
+        <label class="form-label">मोबाइल नंबर</label>
+        <input class="form-input" type="tel" id="f_mobile">
+      </div>
+      <div class="form-group">
+        <label class="form-label">जन्म तारीख</label>
+        <input class="form-input" type="date" id="f_dob">
+      </div>
+      <button type="submit" class="btn btn-royal" style="width:100%;">सेव करें →</button>
+    </form>
+  </div>
+</div>
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
+<script src="js/firebase-config.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/students.js"></script>
+<script>
+  requireAuth();
+  window.addEventListener('DOMContentLoaded', loadStudents);
+</script>
+</body>
+</html>
