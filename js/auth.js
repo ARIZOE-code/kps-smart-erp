@@ -55,8 +55,9 @@ if(loginForm){
 
       const userData = userDoc.data();
       // save basic session info for the dashboard to read
-      sessionStorage.setItem('kps_role', userData.role || selectedRole);
-      sessionStorage.setItem('kps_name', userData.name || 'यूज़र');
+      // (handles both "Name"/"Role" and "name"/"role" field casing)
+      sessionStorage.setItem('kps_role', userData.Role || userData.role || selectedRole);
+      sessionStorage.setItem('kps_name', userData.Name || userData.name || 'यूज़र');
 
       window.location.href = 'dashboard.html';
 
