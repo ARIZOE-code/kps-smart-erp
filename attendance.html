@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Attendance — KPS Smart ERP</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-brand">
+    <a href="dashboard.html" style="display:flex;align-items:center;gap:12px;">
+      <div class="topbar-logo">KPS</div>
+      <div><h1>KPS Smart ERP</h1><span>Kamla Public School · Naini</span></div>
+    </a>
+  </div>
+  <div class="topbar-user">
+    <span class="role-pill" id="userRole">role</span>
+    <span id="userName" style="font-size:0.85rem;">यूज़र</span>
+    <button class="btn btn-ghost btn-sm" data-logout>लॉगआउट</button>
+  </div>
+</div>
+
+<div class="app-shell">
+  <div class="sidebar">
+    <a href="dashboard.html"><div class="side-link">🏠 डैशबोर्ड</div></a>
+    <a href="students.html"><div class="side-link">🎓 Student Management</div></a>
+    <a href="employees.html"><div class="side-link">👔 Employee Management</div></a>
+    <a href="fees.html"><div class="side-link">💰 Fee Management</div></a>
+    <div class="side-link active">🗓️ Attendance</div>
+    <a href="salary.html"><div class="side-link">💵 Salary</div></a>
+    <div class="side-link" style="opacity:0.5;">📢 Notice Board</div>
+    <div class="side-link" style="opacity:0.5;">📊 Reports</div>
+  </div>
+
+  <div class="main-content">
+    <div class="page-head">
+      <h2>Attendance</h2>
+      <p>छात्रों की दैनिक उपस्थिति दर्ज करो और मासिक रिपोर्ट देखो।</p>
+    </div>
+
+    <div class="subtab-row">
+      <button class="subtab-btn active" data-target="panelMark">✅ उपस्थिति दर्ज करें</button>
+      <button class="subtab-btn" data-target="panelReport">📊 मासिक रिपोर्ट</button>
+    </div>
+
+    <!-- MARK ATTENDANCE -->
+    <div class="subtab-panel active" id="panelMark">
+      <div class="panel glass">
+        <div class="att-toolbar">
+          <div class="form-group">
+            <label class="form-label">कक्षा</label>
+            <select class="form-input" id="att_class">
+              <option value="">चुनें</option>
+              <option>1</option><option>2</option><option>3</option><option>4</option>
+              <option>5</option><option>6</option><option>7</option><option>8</option>
+              <option>9</option><option>10</option><option>11</option><option>12</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">अनुभाग</label>
+            <select class="form-input" id="att_section">
+              <option value="">चुनें</option>
+              <option>A</option><option>B</option><option>C</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">तारीख</label>
+            <input class="form-input" type="date" id="att_date">
+          </div>
+          <button class="btn btn-royal" onclick="loadRoster()">सूची लोड करें</button>
+        </div>
+      </div>
+
+      <div class="panel glass" id="rollListWrap" style="display:none;">
+        <div class="att-roll-list" id="rollList"></div>
+        <button class="btn btn-gold" id="saveAttBtn" style="width:100%;margin-top:18px;" onclick="saveAttendance()">उपस्थिति सेव करें →</button>
+      </div>
+    </div>
+
+    <!-- MONTHLY REPORT -->
+    <div class="subtab-panel" id="panelReport">
+      <div class="panel glass">
+        <div class="att-toolbar">
+          <div class="form-group">
+            <label class="form-label">कक्षा</label>
+            <select class="form-input" id="rep_class">
+              <option value="">चुनें</option>
+              <option>1</option><option>2</option><option>3</option><option>4</option>
+              <option>5</option><option>6</option><option>7</option><option>8</option>
+              <option>9</option><option>10</option><option>11</option><option>12</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">अनुभाग</label>
+            <select class="form-input" id="rep_section">
+              <option value="">चुनें</option>
+              <option>A</option><option>B</option><option>C</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">महीना</label>
+            <input class="form-input" type="month" id="rep_month">
+          </div>
+          <button class="btn btn-royal" onclick="loadMonthlyReport()">रिपोर्ट देखें</button>
+        </div>
+      </div>
+
+      <div class="panel glass" style="padding:16px;overflow-x:auto;">
+        <table class="data-table">
+          <thead>
+            <tr><th>छात्र</th><th>विवरण</th><th>%</th><th>—</th></tr>
+          </thead>
+          <tbody id="reportTbody">
+            <tr><td colspan="4" style="text-align:center;padding:20px;color:var(--muted);">कक्षा, अनुभाग और महीना चुनकर "रिपोर्ट देखें" दबाओ।</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
+<script src="js/firebase-config.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/attendance.js"></script>
+<script>
+  requireAuth();
+  document.querySelectorAll('.subtab-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      document.querySelectorAll('.subtab-btn').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      const target = btn.getAttribute('data-target');
+      document.querySelectorAll('.subtab-panel').forEach(p=>{
+        p.classList.toggle('active', p.id === target);
+      });
+    });
+  });
+  window.addEventListener('DOMContentLoaded', ()=>{
+    document.getElementById('att_date').value = new Date().toISOString().slice(0,10);
+  });
+</script>
+</body>
+</html>
